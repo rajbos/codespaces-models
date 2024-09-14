@@ -6,8 +6,17 @@ from azure.ai.inference import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 
-token = os.environ["GITHUB_TOKEN"]
-endpoint = "https://models.inference.ai.azure.com"
+# Set the runtime to "GITHUB" if you are running this code in GitHub 
+# or something else to hit your own Azure OpenAI endpoint
+runtime="GITHUBno"
+if runtime=="GITHUB":
+    print("Running in GitHub")
+    token = os.environ["GITHUB_TOKEN"]
+    ENDPOINT = "https://models.inference.ai.azure.com"
+else:
+    print("Running in Azure")
+    token = os.environ["AI_TOKEN"]
+    ENDPOINT = "https://xms-openai.openai.azure.com/openai/deployments/gpt-4o/chat/completions"
 
 # By using the Azure AI Inference SDK, you can easily experiment with different models
 # by modifying the value of `model_name` in the code below. The following models are
@@ -19,22 +28,22 @@ endpoint = "https://models.inference.ai.azure.com"
 # Mistral AI: Mistral-large, Mistral-large-2407, Mistral-Nemo, Mistral-small
 # Azure OpenAI: gpt-4o-mini, gpt-4o
 # Microsoft: Phi-3-medium-128k-instruct, Phi-3-medium-4k-instruct, Phi-3-mini-128k-instruct, Phi-3-mini-4k-instruct, Phi-3-small-128k-instruct, Phi-3-small-8k-instruct
-model_name = "gpt-4o-mini"
+model_name = "gpt-4o"
 
 client = ChatCompletionsClient(
-    endpoint=endpoint,
+    endpoint=ENDPOINT,
     credential=AzureKeyCredential(token),
 )
 
 response = client.complete(
     messages=[
-        SystemMessage(content="You are a helpful assistant."),
+        SystemMessage(content="Talk like a pirate and elaborate on the following:"),
         UserMessage(content="What is the capital of France?"),
     ],
     model=model_name,
     # Optional parameters
     temperature=1.,
-    max_tokens=1000,
+    max_tokens=4000,
     top_p=1.    
 )
 
