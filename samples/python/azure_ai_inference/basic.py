@@ -28,7 +28,7 @@ else:
         endpoint=ENDPOINT,
         credential=AzureKeyCredential(""),  # Pass in an empty value.
         headers={"api-key": token},
-        api_version="2024-06-01"  # AOAI api-version. Update as needed.
+        #api_version="2024-06-01"  # AOAI api-version is not required
     )
 
 # By using the Azure AI Inference SDK, you can easily experiment with different models
